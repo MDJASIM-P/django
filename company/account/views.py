@@ -93,7 +93,8 @@ class Registration(View):
             uname = form_data.cleaned_data.get("user_name")
             email = form_data.cleaned_data.get("email")
             psw = form_data.cleaned_data.get("password")
-            Employee.objects.create(firstname = fname, lastname = lname, username = uname, email = email, password = psw)
+            age = form_data.cleaned_data.get("age")
+            Employee.objects.create(firstname = fname, lastname = lname, username = uname, email = email, password = psw, age = age)
             messages.success(request, "Registration succesfull")
             messages.info(request, "You can Login now")
             return redirect('home')
@@ -127,3 +128,45 @@ class Emp_delete(View):
         emp.delete()
         messages.success(request, "Employee deleted")
         return redirect("emp_data")
+    
+class Emp_update(View):
+    def get(self, request, *args, **kwargs):
+        eid= kwargs.get("eid")
+        emp = Employee.objects.get(id=eid)
+        form = RegForm(initial={"first_name":emp.firstname,"last_name":emp.lastname,"email":emp.email,"age":emp.age,"user_name":emp.username, })
+        return render(request, 'emp_update.html', {"form":form})
+    def post(self, request, *args, **kwargs):
+        id = kwargs.get("eid")
+        emp = Employee.objects.get(id=id)
+        form_data = RegForm(data=request.POST)
+        if form_data.is_valid():
+            fname = form_data.cleaned_data.get("first_name")
+            lname = form_data.cleaned_data.get("last_name")
+            uname = form_data.cleaned_data.get("user_name")
+            email = form_data.cleaned_data.get("email")
+            psw = form_data.cleaned_data.get("password")
+            age = form_data.cleaned_data.get("age")
+            emp.firstname = fname
+            emp.lastname = lname
+            emp.username = uname
+            emp.email = email
+            emp.age = age
+            emp.save()
+            messages.success(request, "Employee updated")
+            return redirect("emp_data")
+        else:
+            return render(request, "emp_update.html", {"form":form_data})
+
+
+class Mng_view(View):
+    def get(self, request, *args, **kwargs):
+        form = Mng_ModelForm()
+        return render(request, "manager_reg.html", {"form":form})
+    def post(self, request, *args, **kwargs):
+        form_data = Mng_ModelForm(data=request.POST)
+        if form_data.is_valid():
+            form_data.save()
+            messages.success(request, "Manager data added")
+            return redirect("home")
+        else:
+            return render(request, "manager_reg.html", {"from":form_data})

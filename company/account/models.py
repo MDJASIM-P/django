@@ -12,3 +12,16 @@ class Employee(models.Model):
     # print firstname as object
     def __str__(self):
         return self.firstname
+    
+# Create a model
+class Mng_model(models.Model):
+    first_name = models.CharField(max_length=100, verbose_name="First Name")
+    last_name = models.CharField(max_length=100)
+    age = models.IntegerField()
+    email = models.EmailField()
+    qualification = models.CharField(max_length=100)
+    def __str__(self):
+        return self.first_name
+    class Meta:
+        db_table = "Manager"    # to change Table name in db.lite3
+# Do migrations to create table

@@ -9,6 +9,8 @@ urlpatterns = [
     path('registration', Registration.as_view(), name='reg'),
     path('log_in', Login_form.as_view(), name='log'),
     path('emp_details', Emp_details.as_view(), name='emp_data'),
-    path('demp/<int:eid>', Emp_delete.as_view(), name="demp"),
+    path('demp/<int:eid>', Emp_delete.as_view(), name="demp"),  # int:eid  recives datum.id from template
+    path('emp_update/<int:eid>', Emp_update.as_view(), name='update'),
+    path('add_manager', Mng_view.as_view(), name='regm'),
 
 ]

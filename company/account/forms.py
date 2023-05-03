@@ -1,9 +1,12 @@
 from django import forms
+from .models import Mng_model
+
 #  ioc - Inversion Of Control : 
 class RegForm(forms.Form):
     first_name = forms.CharField(label="Enter First name" , max_length=100, widget=forms.TextInput(attrs={"placeholder": "Firstname"}), )
     last_name = forms.CharField(max_length=100, widget=forms.TextInput(attrs={"class": "form-control bg-info"}))
     email = forms.EmailField(widget=forms.EmailInput(attrs={"class": "form-control"}))
+    age = forms.IntegerField()
     user_name = forms.CharField(max_length=100)
     password = forms.CharField(max_length=100, widget=forms.PasswordInput(attrs={"placeholder": "Enter Password"}))
     # overriding of clean() method for customized validation of inputs
@@ -34,3 +37,13 @@ class CountForm(forms.Form):
             msg = "Not only letters"
             self.add_error("text", msg)         
         return super().clean()
+    
+
+class Mng_ModelForm(forms.ModelForm):
+    class Meta:
+        model = Mng_model
+        fields = "__all__"
+        widgets = {
+            "first_name":forms.TextInput(attrs={"class":"form-control bg-info"}),
+            "age":forms.NumberInput(attrs={"class":"form-control"})
+        }
