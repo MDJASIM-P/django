@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.views import View   # class View import from module views of django
 from .forms import *  # /RegiForm  # class RegiForm import from module forms on same app/account
 from django.contrib import messages
-from .models import Employee
+from .models import *
 
 # Create your views here.
 
@@ -158,7 +158,7 @@ class Emp_update(View):
             return render(request, "emp_update.html", {"form":form_data})
 
 
-class Mng_view(View):
+class Mng_reg(View):
     def get(self, request, *args, **kwargs):
         form = Mng_ModelForm()
         return render(request, "manager_reg.html", {"form":form})
@@ -170,3 +170,16 @@ class Mng_view(View):
             return redirect("home")
         else:
             return render(request, "manager_reg.html", {"from":form_data})
+
+class Mng_table(View):
+    def get(self, request, *args, **kwargs):
+        data = Mng_model.objects.all()
+        return render(request, "mng_table.html", {"data":data})
+
+class Mng_delete(View):
+    def get(self, request, *args, **kwargs):
+        mid = kwargs.get('mid')
+        mng = Mng_model.objects.get(id=mid).first_name
+        Mng_model.objects.filter(id=mid).delete() 
+        messages.success(request, "%s deleted"%mng)
+        return redirect("mng_data")
