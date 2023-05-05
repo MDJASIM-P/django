@@ -47,6 +47,7 @@ class Add(View):
 #             else:
 #                 count[i] = 1
 #         return render(request, "num_words.html", {"data":count})
+
 class Count_word(View):
     def get(self, request, *args, **kwargs):
         form = CountForm()
@@ -67,7 +68,7 @@ class Count_word(View):
         else:
             # return HttpResponse(form_data.errors)
             return render(request, "num_words.html", {"form":form_data})            
-        
+     
 class Calculator(View):
     def get(self, request, *args, **kwargs):
         return render(request, "calculator.html")
@@ -128,7 +129,7 @@ class Emp_delete(View):
         emp.delete()
         messages.success(request, "Employee deleted")
         return redirect("emp_data")
-    
+  
 class Emp_update(View):
     def get(self, request, *args, **kwargs):
         eid= kwargs.get("eid")
@@ -144,7 +145,6 @@ class Emp_update(View):
             lname = form_data.cleaned_data.get("last_name")
             uname = form_data.cleaned_data.get("user_name")
             email = form_data.cleaned_data.get("email")
-            psw = form_data.cleaned_data.get("password")
             age = form_data.cleaned_data.get("age")
             emp.firstname = fname
             emp.lastname = lname
@@ -163,7 +163,7 @@ class Mng_reg(View):
         form = Mng_ModelForm()
         return render(request, "manager_reg.html", {"form":form})
     def post(self, request, *args, **kwargs):
-        form_data = Mng_ModelForm(data=request.POST)
+        form_data = Mng_ModelForm(data=request.POST, files=request.FILES)  # request.POST only reading plain texts
         if form_data.is_valid():
             form_data.save()
             messages.success(request, "Manager data added")
@@ -183,3 +183,32 @@ class Mng_delete(View):
         Mng_model.objects.filter(id=mid).delete() 
         messages.success(request, "%s deleted"%mng)
         return redirect("mng_data")
+
+class Mng_update(View):
+    def get(self, request, *args, **kwargs):
+        mid = kwargs.get("mid")
+        mng = Mng_model.objects.get(id=mid)
+        form = Mng_ModelForm(instance=mng)
+        return render(request, "mng_update.html", {"form":form})
+    def post(self, request, *args, **kwargs):
+        mid = kwargs.get("mid")
+        mng = Mng_model.objects.get(id=mid)
+        form_data = Mng_ModelForm(data=request.POST, instance=mng)
+        if form_data.is_valid():
+            mng_name = mng.first_name
+            form_data.save()
+            messages.success(request, "Manager:%s data added"%mng_name)
+            return redirect("mng_data")
+        else:
+            return render(request, "mng_update.html", {"form":form_data})    
+
+
+
+def Sample_log(request):
+    if request.method=='GET':
+        return render(request, "sample_log.html")
+    elif request.method == "POST":
+        eml = request.POST.get("email")
+        psw = request.POST.get("psw")
+        return HttpResponse("U are in</br>Email:"+eml+"</br>Password:"+psw)
+        

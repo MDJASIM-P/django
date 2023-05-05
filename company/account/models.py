@@ -20,6 +20,8 @@ class Mng_model(models.Model):
     age = models.IntegerField()
     email = models.EmailField()
     qualification = models.CharField(max_length=100)
+    image = models.ImageField(upload_to="profile_pics", null=True) # upload_to defined the path to store data, null value 
+
     def __str__(self):
         return self.first_name
     class Meta:
