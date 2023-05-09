@@ -188,27 +188,16 @@ class Mng_update(View):
     def get(self, request, *args, **kwargs):
         mid = kwargs.get("mid")
         mng = Mng_model.objects.get(id=mid)
-        form = Mng_ModelForm(instance=mng)
+        form = Mng_ModelForm(instance=mng)  # instace attribute refer to assign values of mng obj to form fields
         return render(request, "mng_update.html", {"form":form})
     def post(self, request, *args, **kwargs):
         mid = kwargs.get("mid")
         mng = Mng_model.objects.get(id=mid)
-        form_data = Mng_ModelForm(data=request.POST, instance=mng)
+        form_data = Mng_ModelForm(data=request.POST, files=request.FILES, instance=mng)
         if form_data.is_valid():
             mng_name = mng.first_name
             form_data.save()
             messages.success(request, "Manager:%s data added"%mng_name)
             return redirect("mng_data")
         else:
-            return render(request, "mng_update.html", {"form":form_data})    
-
-
-
-def Sample_log(request):
-    if request.method=='GET':
-        return render(request, "sample_log.html")
-    elif request.method == "POST":
-        eml = request.POST.get("email")
-        psw = request.POST.get("psw")
-        return HttpResponse("U are in</br>Email:"+eml+"</br>Password:"+psw)
-        
+            return render(request, "mng_update.html", {"form":form_data}) 

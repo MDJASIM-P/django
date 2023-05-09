@@ -1,5 +1,6 @@
 from django.db import models
 
+
 # Create your models here.
 
 class Employee(models.Model):
@@ -15,15 +16,16 @@ class Employee(models.Model):
     
 # Create a model
 class Mng_model(models.Model):
-    first_name = models.CharField(max_length=100, verbose_name="First Name")
+    first_name = models.CharField(max_length=100, verbose_name="First Name")    # verbose_name refers label of input
     last_name = models.CharField(max_length=100)
-    age = models.IntegerField()
-    email = models.EmailField()
+    age = models.IntegerField(db_column="Age")   # db_column refers column heading in db.sqlite3
+    email = models.EmailField(blank=True)   # blank=True allow to submit empty field
     qualification = models.CharField(max_length=100)
-    image = models.ImageField(upload_to="profile_pics", null=True) # upload_to defined the path to store data, null value 
+    image = models.ImageField(upload_to='profile_pics/%Y/%m/%d/', null=True) # upload_to defined the path to store data
 
     def __str__(self):
         return self.first_name
     class Meta:
-        db_table = "Manager"    # to change Table name in db.lite3
+        db_table = "Managers"    # to change Table name in db.lite3
 # Do migrations to create table
+

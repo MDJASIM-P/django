@@ -17,6 +17,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from account.views import *
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -25,6 +27,8 @@ urlpatterns = [
     path('acc/', include('account.urls')),
     # path('', home, name="home"),
     path('', Home.as_view(), name="home")  ,     # as_view() function method makes class Home as a function
-
     
 ]
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL,
+                          document_root=settings.MEDIA_ROOT)

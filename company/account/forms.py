@@ -1,5 +1,6 @@
 from django import forms
-from .models import Mng_model
+from .models import *
+
 
 #  ioc - Inversion Of Control : 
 class RegForm(forms.Form):
@@ -42,8 +43,9 @@ class CountForm(forms.Form):
 class Mng_ModelForm(forms.ModelForm):
     class Meta:
         model = Mng_model
-        fields = "__all__"
+        fields = "__all__"  # all fields in Model creates in Form    # ['field_1', 'field_2'] for only show name and std field
         widgets = {
             "first_name":forms.TextInput(attrs={"class":"form-control bg-info"}),
             "age":forms.NumberInput(attrs={"class":"form-control"})
         }
+

@@ -30,6 +30,7 @@
             <th>Email</th>
             <th>Qualification</th>
             <th>Age</th>
+            <th>Profile pic</th>
         </tr>
         {% for datum in data %}
         <tr>
@@ -41,6 +42,11 @@
             <td>
               <a href="{% url 'dmng' datum.id %}" class="btn btn-danger">Delete</a>
               <a href="{% url 'umng' datum.id %}" class="btn btn-primary">Update</a>
+            </td>
+            <td>
+              {% if datum.image %}
+              <img src="{{datum.image.url}}" alt="connect" style="max-width: 50px; max-height: 50px;">
+              {% endif %}
             </td>
         </tr>
         {% endfor %}
