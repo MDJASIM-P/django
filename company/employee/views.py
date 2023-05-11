@@ -20,6 +20,4 @@ class AddProduct(View):
         else:
             return render(request, "addpro.html", {"form":form_data})
         
-
-
-        
+      

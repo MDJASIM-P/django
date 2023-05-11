@@ -201,3 +201,9 @@ class Mng_update(View):
             return redirect("mng_data")
         else:
             return render(request, "mng_update.html", {"form":form_data}) 
+
+
+class SignUp(View):
+    def get(self, request, *args, **kwargs):
+        form = SignUpForm()
+        return render(request, "SignUp.html", {"form":form})

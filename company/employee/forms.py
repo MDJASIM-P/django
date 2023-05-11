@@ -11,5 +11,6 @@ class ProductForm(forms.ModelForm):
             "man_date":forms.DateInput(attrs={"class":"form-control"}),
             "price":forms.NumberInput(attrs={"class":"form-control"}),
             "image":forms.FileInput(attrs={"class":"form-control"}),
-            "exp_date":forms.DateInput(attrs={"class":"form-control"}),
+            "category":forms.Select(attrs={"class":"form-control"}),
+            "exp_date":forms.DateInput(attrs={"class":"form-control", "type":"date"}),
         }

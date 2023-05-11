@@ -18,4 +18,6 @@ urlpatterns = [
     #  set path form to teachers home
     path('teachers/', include('teachers.urls')),
 
+    path("signup/", SignUp.as_view(), name = 'signup'),
+
 ]
