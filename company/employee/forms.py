@@ -10,7 +10,7 @@ class ProductForm(forms.ModelForm):
             "name":forms.TextInput(attrs={"class":"form-control"}),
             "man_date":forms.DateInput(attrs={"class":"form-control"}),
             "price":forms.NumberInput(attrs={"class":"form-control"}),
-            "image":forms.FileInput(attrs={"class":"form-control"}),
+            "image":forms.FileInput(attrs={"class":"form-control", "type":"file", "onchange":"readURL(this);"}),
             "category":forms.Select(attrs={"class":"form-control"}),
             "exp_date":forms.DateInput(attrs={"class":"form-control", "type":"date"}),
         }

@@ -19,5 +19,5 @@ class AddProduct(View):
             return redirect("pro")
         else:
             return render(request, "addpro.html", {"form":form_data})
-        
-      
+
+
