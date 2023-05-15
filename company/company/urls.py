@@ -26,7 +26,8 @@ urlpatterns = [
     path('emp/', include('employee.urls')), 
     path('acc/', include('account.urls')),
     # path('', home, name="home"),
-    path('', Home.as_view(), name="home")  ,     # as_view() function method makes class Home as a function
+    path('home', Home.as_view(), name="home"),     # as_view() function method makes class Home as a function
+    path('', SignIn.as_view(), name="signin")
     
 ]
 if settings.DEBUG:

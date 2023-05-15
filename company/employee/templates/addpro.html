@@ -39,17 +39,13 @@
     <h3 class="text-center p-2">Add your New Product</h3>
     <form action="" method="post" enctype="multipart/form-data">
         {% csrf_token %}
+        
         <div class="row jumbotron">
             <div class="col">
                 <div>
                     {{form.name.errors}}
                     <label for="{{form.name.id_for_label}}">Enter Name</label>
                     {{form.name}}
-                </div>
-                <div>
-                    {{form.man_date.errors}}
-                    <label for="{{form.man_date.id_for_label}}">Enter DOM</label>
-                    {{form.man_date}}
                 </div>
                 <div>
                     {{form.price.errors}}
@@ -63,6 +59,7 @@
                     <label for="{{form.category.id_for_label}}">Enter Type</label>
                     {{form.category}}
                 </div>
+                <label for="">Date of today will be saved as Manufacturing date automatically</label>
                 <div>
                     {{form.exp_date.errors}}
                     <label for="{{form.exp_date.id_for_label}}">Enter DOE</label>

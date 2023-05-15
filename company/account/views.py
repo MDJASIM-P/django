@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.views import View   # class View import from module views of django
 from .forms import *  # /RegiForm  # class RegiForm import from module forms on same app/account
 from django.contrib import messages
+from django.contrib.auth import authenticate, login
 from .models import *
 
 # Create your views here.
@@ -13,7 +14,9 @@ from .models import *
 
 class Home(View):       # inheritance of View
     def get(self, request):     # get method for get request
-        return render(request, 'home.html')
+        user_obj = request.user
+        fname =  request.session['fname']
+        return render(request, 'home.html', {'user':user_obj, 'fname':fname})
 
 class Login(View):
     def get(self,request,*args,**kwargs):
@@ -71,7 +74,8 @@ class Count_word(View):
      
 class Calculator(View):
     def get(self, request, *args, **kwargs):
-        return render(request, "calculator.html")
+        user_obj = request.user
+        return render(request, "calculator.html", {'user':user_obj})
     def post(self, request, *args, **kwargs):
         value = request.POST.get("line")
         return render(request, "calculator.html", {"data": eval(value)})
@@ -164,6 +168,8 @@ class Mng_reg(View):
         return render(request, "manager_reg.html", {"form":form})
     def post(self, request, *args, **kwargs):
         form_data = Mng_ModelForm(data=request.POST, files=request.FILES)  # request.POST only reading plain texts
+        fn = request.POST.get("first_name")
+        request.session['fname']=fn     # go to home
         if form_data.is_valid():
             form_data.save()
             messages.success(request, "Manager data added")
@@ -202,8 +208,40 @@ class Mng_update(View):
         else:
             return render(request, "mng_update.html", {"form":form_data}) 
 
-
+# admin and user 
+# for User
 class SignUp(View):
     def get(self, request, *args, **kwargs):
         form = SignUpForm()
         return render(request, "SignUp.html", {"form":form})
+    def post(self, request, *args, **kwargs):
+        form_data = SignUpForm(data = request.POST)
+        if form_data.is_valid():
+            form_data.save()
+            messages.success(request, "Registration Success")
+            return redirect('home')
+        else:
+            return render(request, "SignUP.html", {"form":form_data})
+        
+from django.contrib.auth import authenticate
+class SignIn(View):
+    def get(self, request, *args, **kwargs):
+        form = SignInForm()
+        return render(request, "SignIn.html", {"form":form})
+    def post(self, request, *args, **kwargs):
+        form_data = SignInForm(data = request.POST)
+        if form_data.is_valid():
+            uname = form_data.cleaned_data.get("username")
+            pswd = form_data.cleaned_data.get("password")
+            user = authenticate(request, username= uname, password = pswd)
+            if user:
+                login(request, user)
+                messages.success(request, "Sign in completed")
+                return redirect("home")
+            else:
+                messages.error(request, "Invalid username or Password")
+                return render(request, "SignIn.html", {"form":form_data})
+        else:
+            return render(request, "SignIn.html", {"form":form_data})
+
+

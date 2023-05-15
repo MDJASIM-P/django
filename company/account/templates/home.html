@@ -19,6 +19,8 @@
     
     <div class="container bg-info text-center">
         <h1 class="py-1">Home Page</h1>
+        <h2 class="text-danger">Welcome {{user}}</h2>
+        <h3>manager {{fname}}</h3>
         <!-- for alert messages -->
         {% for i in messages %}
           {% if i.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
